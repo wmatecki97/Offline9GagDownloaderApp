@@ -5,12 +5,14 @@ namespace Offline9GagDownloader;
 
 public partial class MainPage : ContentPage
 {
-	int count = 0;
+    private readonly IDownloadedPostsManager downloadedPostsManager;
+    int count = 0;
 
-	public MainPage()
+	public MainPage(IDownloadedPostsManager downloadedPostsManager)
 	{
 		InitializeComponent();
-	}
+        this.downloadedPostsManager = downloadedPostsManager;
+    }
 
 
 
@@ -24,6 +26,7 @@ public partial class MainPage : ContentPage
             var postsString = await gagView.EvaluateJavaScriptAsync(JsScripts.GetPosts);
             postsString = postsString.Replace("\\", string.Empty);
 			var posts = JsonConvert.DeserializeObject<PostDefinition[]>(postsString);
+			var mediaPath = await downloadedPostsManager.TryDownloadPostAsync(posts[0].Header, posts[0].Img);
         }
 
         //var images = Newtonsoft.Json.JsonConvert.DeserializeObject<string[]>(memeImages);

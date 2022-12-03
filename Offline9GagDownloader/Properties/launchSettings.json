@@ -3,6 +3,15 @@
     "Windows Machine": {
       "commandName": "MsixPackage",
       "nativeDebugging": false
+    },
+    "Profile 1": {
+      "commandName": "Project",
+      "nativeDebugging": true,
+      "jsWebView2Debugging": true,
+      "sqlDebugging": true
+    },
+    "Profile 2": {
+      "commandName": "Executable"
     }
   }
 }
