@@ -1,4 +1,5 @@
-﻿using Offline9GagDownloader._9Gag;
+﻿using Newtonsoft.Json;
+using Offline9GagDownloader._9Gag;
 
 namespace Offline9GagDownloader;
 
@@ -19,8 +20,10 @@ public partial class MainPage : ContentPage
 		{
             await gagView.EvaluateJavaScriptAsync("window.scrollTo(0, document.body.scrollHeight)");
 			await Task.Delay(1000);
+
             var postsString = await gagView.EvaluateJavaScriptAsync(JsScripts.GetPosts);
-			
+            postsString = postsString.Replace("\\", string.Empty);
+			var posts = JsonConvert.DeserializeObject<PostDefinition[]>(postsString);
         }
 
         //var images = Newtonsoft.Json.JsonConvert.DeserializeObject<string[]>(memeImages);
