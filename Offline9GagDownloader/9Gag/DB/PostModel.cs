@@ -24,5 +24,7 @@ namespace Offline9GagDownloader._9Gag.DB
             CreatedDate = DateTime.Now;
             MediaPath = mediaPath;
         }
+
+
     }
 }

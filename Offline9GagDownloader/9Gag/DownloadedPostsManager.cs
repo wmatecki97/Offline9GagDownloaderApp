@@ -4,20 +4,18 @@ namespace Offline9GagDownloader._9Gag
 {
     internal class DownloadedPostsManager : IDownloadedPostsManager
     {
-        private readonly IHttpClientFactory factory;
-        private readonly PostsDbContext dbContext;
+        private readonly IPostDatabase postDatabase;
         private static string StorageDirectoryName = $"{Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData)}/NineGagDownloader";
-        public DownloadedPostsManager(IHttpClientFactory factory, PostsDbContext dbContext)
+        public DownloadedPostsManager(IPostDatabase postDatabase)
         {
-            this.factory = factory;
-            this.dbContext = dbContext;
+            this.postDatabase = postDatabase;
         }
 
         public async Task<string> TryDownloadPostAsync(PostDefinition post)
         {
             try
             {
-                using var client = factory.CreateClient();
+                using var client = new HttpClient();
                 var media = await client.GetByteArrayAsync(post.ImgSrc);
 
                 var storageFileName = GetStorageFileName(post.ImgSrc);
@@ -30,8 +28,7 @@ namespace Offline9GagDownloader._9Gag
                 await File.WriteAllBytesAsync(storageFileName, media);
 
                 var postModel = new PostModel(post, storageFileName);
-                dbContext.Posts.Add(postModel);
-                await dbContext.SaveChangesAsync();
+                await postDatabase.AddItem(postModel);
 
                 return storageFileName;
             }

@@ -1,5 +1,4 @@
-﻿using Newtonsoft.Json;
-using Offline9GagDownloader._9Gag;
+﻿using Offline9GagDownloader._9Gag;
 
 namespace Offline9GagDownloader;
 
@@ -30,12 +29,12 @@ public partial class MainPage : ContentPage
             postsString = $"{postsString.Substring(0, postsString.Length - 1)}, {postsMobileString.Substring(1)}";
             postsString = postsString.Replace("\\", string.Empty);
 			var posts = JsonConvert.DeserializeObject<PostDefinition[]>(postsString);
-			foreach(var post in posts)
+			foreach (var post in posts)
 			{
-                await downloadedPostsManager.TryDownloadPostAsync(posts[0]);
-            }
+				await downloadedPostsManager.TryDownloadPostAsync(posts[0]);
+			}
 
-        }
+		}
 
         //var images = Newtonsoft.Json.JsonConvert.DeserializeObject<string[]>(memeImages);
 		count++;

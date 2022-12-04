@@ -1,5 +1,6 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
 using Offline9GagDownloader._9Gag;
+using Offline9GagDownloader._9Gag.DB;
 
 namespace Offline9GagDownloader;
 
@@ -17,8 +18,8 @@ public static class MauiProgram
 			});
         builder.Services.AddSingleton<MainPage>();
         builder.Services.AddScoped<IDownloadedPostsManager, DownloadedPostsManager>();
-		builder.Services.AddHttpClient();
-		builder.Services.AddEntityFrameworkSqlite().AddDbContext<PostsDbContext>();
+		//builder.Services.AddHttpClient();
+		builder.Services.AddSingleton<IPostDatabase, PostDatabase>();
 		return builder.Build();
 	}
 }
