@@ -11,21 +11,19 @@ namespace Offline9GagDownloader._9Gag
             this.postDatabase = postDatabase;
         }
 
-        public async Task<string> TryDownloadPostAsync(PostDefinition post)
+        public async Task<string> TryDownloadPostAsync(PostDefinition post, HttpClient client)
         {
             try
             {
-                using var client = new HttpClient();
-                var media = await client.GetByteArrayAsync(post.ImgSrc);
-
-                var storageFileName = GetStorageFileName(post.ImgSrc);
-               
-                if (!Directory.Exists(StorageDirectoryName))
+                var posts = await postDatabase.GetItems();
+                if (posts.Any(p => p.SrcUrl == post.ImgSrc))
                 {
-                    Directory.CreateDirectory(StorageDirectoryName);
+                    return null;
                 }
 
-                await File.WriteAllBytesAsync(storageFileName, media);
+                var media = await client.GetByteArrayAsync(post.ImgSrc);
+
+                string storageFileName = await SaveMediaOnDisc(post, media);
 
                 var postModel = new PostModel(post, storageFileName);
                 await postDatabase.AddItem(postModel);
@@ -36,6 +34,19 @@ namespace Offline9GagDownloader._9Gag
             {
                 return null;
             }
+        }
+
+        private static async Task<string> SaveMediaOnDisc(PostDefinition post, byte[] media)
+        {
+            var storageFileName = GetStorageFileName(post.ImgSrc);
+
+            if (!Directory.Exists(StorageDirectoryName))
+            {
+                Directory.CreateDirectory(StorageDirectoryName);
+            }
+
+            await File.WriteAllBytesAsync(storageFileName, media);
+            return storageFileName;
         }
 
         private static string GetStorageFileName(string url)
