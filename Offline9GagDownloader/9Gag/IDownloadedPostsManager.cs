@@ -2,6 +2,6 @@
 {
     public interface IDownloadedPostsManager
     {
-        Task<string> TryDownloadPostAsync(string title, string url);
+        Task<string> TryDownloadPostAsync(PostDefinition postDefinition);
     }
 }

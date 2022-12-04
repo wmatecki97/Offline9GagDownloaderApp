@@ -1,22 +1,26 @@
-﻿namespace Offline9GagDownloader._9Gag
+﻿using Offline9GagDownloader._9Gag.DB;
+
+namespace Offline9GagDownloader._9Gag
 {
     internal class DownloadedPostsManager : IDownloadedPostsManager
     {
         private readonly IHttpClientFactory factory;
+        private readonly PostsDbContext dbContext;
         private static string StorageDirectoryName = $"{Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData)}/NineGagDownloader";
-        public DownloadedPostsManager(IHttpClientFactory factory)
+        public DownloadedPostsManager(IHttpClientFactory factory, PostsDbContext dbContext)
         {
             this.factory = factory;
+            this.dbContext = dbContext;
         }
 
-        public async Task<string> TryDownloadPostAsync(string title, string url)
+        public async Task<string> TryDownloadPostAsync(PostDefinition post)
         {
             try
             {
                 using var client = factory.CreateClient();
-                var media = await client.GetByteArrayAsync(url);
+                var media = await client.GetByteArrayAsync(post.ImgSrc);
 
-                var storageFileName = GetStorageFileName(url);
+                var storageFileName = GetStorageFileName(post.ImgSrc);
                
                 if (!Directory.Exists(StorageDirectoryName))
                 {
@@ -24,7 +28,11 @@
                 }
 
                 await File.WriteAllBytesAsync(storageFileName, media);
-                var f = await File.ReadAllBytesAsync(storageFileName);
+
+                var postModel = new PostModel(post, storageFileName);
+                dbContext.Posts.Add(postModel);
+                await dbContext.SaveChangesAsync();
+
                 return storageFileName;
             }
             catch (Exception ex)

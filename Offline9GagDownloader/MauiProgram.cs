@@ -1,4 +1,5 @@
-﻿using Offline9GagDownloader._9Gag;
+﻿using Microsoft.Extensions.DependencyInjection;
+using Offline9GagDownloader._9Gag;
 
 namespace Offline9GagDownloader;
 
@@ -15,8 +16,9 @@ public static class MauiProgram
 				fonts.AddFont("OpenSans-Semibold.ttf", "OpenSansSemibold");
 			});
         builder.Services.AddSingleton<MainPage>();
-        builder.Services.AddSingleton<IDownloadedPostsManager, DownloadedPostsManager>();
+        builder.Services.AddScoped<IDownloadedPostsManager, DownloadedPostsManager>();
 		builder.Services.AddHttpClient();
+		builder.Services.AddEntityFrameworkSqlite().AddDbContext<PostsDbContext>();
 		return builder.Build();
 	}
 }
