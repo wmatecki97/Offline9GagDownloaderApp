@@ -53,4 +53,14 @@
 	  <PackageReference Include="sqlite-net-pcl" Version="1.8.116" />
 	</ItemGroup>
 
+	<ItemGroup>
+	  <ProjectReference Include="..\VideoPlayback\VideoPlayback.csproj" />
+	</ItemGroup>
+
+	<ItemGroup>
+	  <MauiXaml Update="BrowsePage.xaml">
+	    <Generator>MSBuild:Compile</Generator>
+	  </MauiXaml>
+	</ItemGroup>
+
 </Project>

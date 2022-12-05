@@ -1,17 +1,17 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using SQLite;
+using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Offline9GagDownloader._9Gag.DB
 {
-    internal class PostModel
+    public class PostModel
     {
-        [Key]
-        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
+        [PrimaryKey, AutoIncrement]
         public int Id { get; set; }
-        public DateTime CreatedDate { get; }
-        public string MediaPath { get; }
-        public string Title { get; }
-        public string SrcUrl { get; }
+        public DateTime CreatedDate { get; set; }
+        public string MediaPath { get; set; }
+        public string Title { get; set; }
+        public string SrcUrl { get; set; }
 
         public PostModel()
         {

@@ -16,9 +16,10 @@ public partial class MainPage : ContentPage
 
 
 
-	private async void OnDownloadClick(object sender, EventArgs e)
+    private async void OnDownloadClick(object sender, EventArgs e)
 	{
-		using var client = new HttpClient();
+        await Navigation.PushAsync(new BrowsePage(downloadedPostsManager));
+        using var client = new HttpClient();
 		for(int i= 0; i < 1; i++)
 		{
             await gagView.EvaluateJavaScriptAsync("window.scrollTo(0, document.body.scrollHeight)");
@@ -33,7 +34,7 @@ public partial class MainPage : ContentPage
 			var posts = JsonConvert.DeserializeObject<PostDefinition[]>(postsString);
 			foreach (var post in posts)
 			{
-				await downloadedPostsManager.TryDownloadPostAsync(posts[0], client);
+				await downloadedPostsManager.TryDownloadPostAsync(post, client);
 			}
 		}
 
@@ -45,7 +46,9 @@ public partial class MainPage : ContentPage
 		else
 			CounterBtn.Text = $"Clicked {count} times";
 
-		SemanticScreenReader.Announce(CounterBtn.Text);
+        await Navigation.PushAsync(new BrowsePage(downloadedPostsManager));
+
+        SemanticScreenReader.Announce(CounterBtn.Text);
 	}
 }
 
