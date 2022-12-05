@@ -5,6 +5,8 @@ VisualStudioVersion = 17.0.31611.283
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Offline9GagDownloader", "Offline9GagDownloader\Offline9GagDownloader.csproj", "{9916BF45-4462-4F36-BF90-01033466F6EE}"
 EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "VideoPlayback", "Offline9GagDownloader\VideoPlayback\VideoPlayback.csproj", "{BF438266-96A0-42C8-B037-630F1D4F2FA3}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -17,6 +19,10 @@ Global
 		{9916BF45-4462-4F36-BF90-01033466F6EE}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{9916BF45-4462-4F36-BF90-01033466F6EE}.Release|Any CPU.Build.0 = Release|Any CPU
 		{9916BF45-4462-4F36-BF90-01033466F6EE}.Release|Any CPU.Deploy.0 = Release|Any CPU
+		{BF438266-96A0-42C8-B037-630F1D4F2FA3}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{BF438266-96A0-42C8-B037-630F1D4F2FA3}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{BF438266-96A0-42C8-B037-630F1D4F2FA3}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{BF438266-96A0-42C8-B037-630F1D4F2FA3}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
