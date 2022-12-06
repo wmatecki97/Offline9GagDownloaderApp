@@ -5,6 +5,7 @@ namespace Offline9GagDownloader._9Gag
     public interface IDownloadedPostsManager
     {
         Task<List<PostModel>> GetAllSavedPosts();
-        Task<string> TryDownloadPostAsync(PostDefinition postDefinition, HttpClient client);
+        Task<bool> TryDownloadPostAsync(PostDefinition postDefinition, HttpClient client);
+        void DeletePost(PostModel currentPost);
     }
 }

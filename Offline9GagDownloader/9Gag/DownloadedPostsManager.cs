@@ -17,7 +17,7 @@ namespace Offline9GagDownloader._9Gag
             return posts;
         }
 
-        public async Task<string> TryDownloadPostAsync(PostDefinition post, HttpClient client)
+        public async Task<bool> TryDownloadPostAsync(PostDefinition post, HttpClient client)
         {
             try
             {
@@ -25,7 +25,7 @@ namespace Offline9GagDownloader._9Gag
 
                 if (posts.Any(p => p.SrcUrl == post.ImgSrc))
                 {
-                    return null;
+                    return false;
                 }
 
                 var media = await client.GetByteArrayAsync(post.ImgSrc);
@@ -33,14 +33,24 @@ namespace Offline9GagDownloader._9Gag
                 string storageFileName = await SaveMediaOnDisc(post, media);
 
                 var postModel = new PostModel(post, storageFileName);
-                await postDatabase.AddItem(postModel);
+                await postDatabase.SavePost(postModel);
 
-                return storageFileName;
+                return true;
             }
             catch (Exception ex)
             {
-                return null;
+                return false;
             }
+        }
+
+        public void DeletePost(PostModel currentPost)
+        {
+            if (currentPost is null)
+                return;
+
+            currentPost.Displayed = true;
+            postDatabase.SavePost(currentPost);
+            File.Delete(currentPost.MediaPath);
         }
 
         private static async Task<string> SaveMediaOnDisc(PostDefinition post, byte[] media)

@@ -7,19 +7,22 @@
     <Grid x:Name="content">
         <Grid.RowDefinitions>
             <RowDefinition Height="*"></RowDefinition>
+            <RowDefinition Height="*"></RowDefinition>
             <RowDefinition Height="10*"></RowDefinition>
             <RowDefinition Height="*"></RowDefinition>
         </Grid.RowDefinitions>
-        <Label Grid.Row="0" x:Name="Title" HorizontalOptions="Center" FontSize="Header" FontAttributes="Bold"></Label>
+        <Label Grid.Row="0" x:Name="StatisticsLabel"></Label>
+        <Label Grid.Row="1" x:Name="Title" HorizontalOptions="Center" FontSize="Large" FontAttributes="Bold"></Label>
 
-        <HorizontalStackLayout x:Name="MediaStackLayout" HorizontalOptions="Center" Grid.Row="1">
+        <HorizontalStackLayout x:Name="MediaStackLayout" HorizontalOptions="Center" Grid.Row="2">
             <controls:Video x:Name="video" IsVisible="false" HorizontalOptions="Center"/>
             <ScrollView x:Name="MediaScrollView" >
                 <Image x:Name="image" />
             </ScrollView>
         </HorizontalStackLayout>
 
-        <Button Grid.Row="10" 
+        <Button x:Name="NextPostButton"
+            Grid.Row="3" 
                 Text="Next"
                 HorizontalOptions="Center"
                 Clicked="NextPostButtonClicked" />

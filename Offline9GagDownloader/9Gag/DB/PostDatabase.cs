@@ -21,10 +21,20 @@ namespace Offline9GagDownloader._9Gag.DB
             return await Database.Table<PostModel>().ToListAsync();
         }
 
-        public async Task<int> AddItem(PostModel item)
+        public async Task<int> SavePost(PostModel post)
         {
             await Init();
-            return await Database.InsertAsync(item);
+
+            if (post.Id != 0)
+            {
+                // Update an existing note.
+                return await Database.UpdateAsync(post);
+            }
+            else
+            {
+                // Save a new note.
+                return await Database.InsertAsync(post);
+            }
         }
 
 

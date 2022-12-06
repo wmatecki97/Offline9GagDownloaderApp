@@ -12,6 +12,7 @@ namespace Offline9GagDownloader._9Gag.DB
         public string MediaPath { get; set; }
         public string Title { get; set; }
         public string SrcUrl { get; set; }
+        public bool Displayed { get; set; }
 
         public PostModel()
         {

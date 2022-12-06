@@ -5,14 +5,18 @@
 
     <Grid>
         <Grid.RowDefinitions>
-            <RowDefinition Height="5*" />
+            <RowDefinition Height="*" />
+            <RowDefinition Height="20*" />
+            <RowDefinition Height="2*" />
             <RowDefinition Height="*" />
         </Grid.RowDefinitions>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="*" />
         </Grid.ColumnDefinitions>
-        <WebView x:Name="gagView"  Grid.Row="0" Source="https://www.9gag.com/" />
-        <HorizontalStackLayout Grid.Row="1" HorizontalOptions="Center">
+        <Label x:Name="StatisticsLabel" Grid.Row="0"></Label>
+
+        <WebView x:Name="gagView"  Grid.Row="1" Source="https://www.9gag.com/" />
+        <HorizontalStackLayout Grid.Row="2" HorizontalOptions="Center">
             <Button
                 x:Name="CounterBtn"
                 Text="Download"
