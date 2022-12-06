@@ -26,6 +26,7 @@ public static class MauiProgram
         builder.Services.AddScoped<IDownloadedPostsManager, DownloadedPostsManager>();
 		//builder.Services.AddHttpClient();
 		builder.Services.AddSingleton<IPostDatabase, PostDatabase>();
-		return builder.Build();
-	}
+        Routing.RegisterRoute("home", typeof(MainPage));
+        return builder.Build();
+    }
 }

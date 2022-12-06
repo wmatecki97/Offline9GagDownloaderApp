@@ -6,20 +6,21 @@
              Title="BrowsePage">
     <Grid x:Name="content">
         <Grid.RowDefinitions>
-            <RowDefinition Height="auto"></RowDefinition>
-            <RowDefinition Height="auto"></RowDefinition>
-            <RowDefinition Height="auto"></RowDefinition>
+            <RowDefinition Height="*"></RowDefinition>
+            <RowDefinition Height="10*"></RowDefinition>
+            <RowDefinition Height="*"></RowDefinition>
         </Grid.RowDefinitions>
-        
         <Label Grid.Row="0" x:Name="Title" HorizontalOptions="Center" FontSize="Header" FontAttributes="Bold"></Label>
-        <HorizontalStackLayout Grid.Row="1" HorizontalOptions="Center">
-            <controls:Video x:Name="video" IsVisible="false" />
-            <Image x:Name="image"/>
+
+        <HorizontalStackLayout x:Name="MediaStackLayout" HorizontalOptions="Center" Grid.Row="1">
+            <controls:Video x:Name="video" IsVisible="false" HorizontalOptions="Center"/>
+            <ScrollView x:Name="MediaScrollView" >
+                <Image x:Name="image" />
+            </ScrollView>
         </HorizontalStackLayout>
-      
-        <Button Grid.Row="2" 
+
+        <Button Grid.Row="10" 
                 Text="Next"
-                Margin="10"
                 HorizontalOptions="Center"
                 Clicked="NextPostButtonClicked" />
     </Grid>
