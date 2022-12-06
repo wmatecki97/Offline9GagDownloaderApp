@@ -18,7 +18,7 @@ public partial class MainPage : ContentPage
 
     private async void OnBrowseClick(object sender, EventArgs e)
 	{
-        await Navigation.PushAsync(new BrowsePage(downloadedPostsManager, this));
+        await Navigation.PushAsync(new BrowsePage(downloadedPostsManager));
     }
 
     private async void OnDownloadClick(object sender, EventArgs e)
@@ -49,7 +49,7 @@ public partial class MainPage : ContentPage
 		else
 			CounterBtn.Text = $"Clicked {count} times";
 
-        await Navigation.PushAsync(new BrowsePage(downloadedPostsManager, this));
+        await Navigation.PushAsync(new BrowsePage(downloadedPostsManager));
 
         SemanticScreenReader.Announce(CounterBtn.Text);
 	}

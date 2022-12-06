@@ -7,15 +7,13 @@ public partial class BrowsePage : ContentPage
 {
     private const int StandardPostSize = 640;
     private readonly IDownloadedPostsManager postsManager;
-    private readonly MainPage mainPage;
     private List<PostModel> posts;
     private int index = 0;
 
-    public BrowsePage(IDownloadedPostsManager postsManager, MainPage mainPage)
+    public BrowsePage(IDownloadedPostsManager postsManager)
     {
         InitializeComponent();
         this.postsManager = postsManager;
-        this.mainPage = mainPage;
     }
 
 
@@ -28,16 +26,20 @@ public partial class BrowsePage : ContentPage
         //remove old from memory
 
 
-
         //load new title and video
         PostModel nextPost = await GetNextPost();
         if (nextPost is null)
             return;
 
-        var postWidth = DeviceDisplay.MainDisplayInfo.Width < StandardPostSize ? DeviceDisplay.MainDisplayInfo.Width : StandardPostSize;
-        video.WidthRequest = postWidth;
-        image.WidthRequest = postWidth;
+        AdjustMediaWidth();
 
+        UpdateMedia(nextPost);
+
+        button.IsEnabled = true;
+    }
+
+    private void UpdateMedia(PostModel nextPost)
+    {
         Title.Text = nextPost.Title;
         if (Path.GetExtension(nextPost.MediaPath) == ".jpg")
         {
@@ -50,14 +52,18 @@ public partial class BrowsePage : ContentPage
         {
             video.Source = new VideoPlayback.Controls.FileVideoSource
             {
-                //File = "C:\\Users\\Wiktor\\AppData\\Local\\Packages\\d06880af-74b7-487d-b0a9-e01132c76fb3_9zz4h110yvjzm\\LocalCache\\Roaming\\NineGagDownloader\\aeQM0vp_460svvp9.webm"
                 File = nextPost.MediaPath
             };
             image.IsVisible = false;
             video.IsVisible = true;
         }
+    }
 
-        button.IsEnabled = true;
+    private void AdjustMediaWidth()
+    {
+        var postWidth = DeviceDisplay.MainDisplayInfo.Width < StandardPostSize ? DeviceDisplay.MainDisplayInfo.Width : StandardPostSize;
+        video.WidthRequest = postWidth;
+        image.WidthRequest = postWidth;
     }
 
     private async Task<PostModel> GetNextPost()
