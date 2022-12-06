@@ -25,33 +25,28 @@ public partial class MainPage : ContentPage
 	{
         using var client = new HttpClient();
 		for(int i= 0; i < 1; i++)
-		{
+        {
             await gagView.EvaluateJavaScriptAsync("window.scrollTo(0, document.body.scrollHeight)");
-
             await Task.Delay(1000);
+            PostDefinition[] posts = await GetPostsFromWebView();
 
-            var postsString = await gagView.EvaluateJavaScriptAsync(JsScripts.GetPosts);
-            var postsMobileString = await gagView.EvaluateJavaScriptAsync(JsScripts.GetPostsMobile);
-			postsString = postsString != "[]" ? postsString : postsMobileString;
-			postsString = postsString.Replace("\\\"", "\"").Replace("\\\\", "\\");
-			var posts = JsonConvert.DeserializeObject<PostDefinition[]>(postsString);
-			foreach (var post in posts)
-			{
-				await downloadedPostsManager.TryDownloadPostAsync(post, client);
-			}
-		}
-
-        //var images = Newtonsoft.Json.JsonConvert.DeserializeObject<string[]>(memeImages);
-		count++;
-
-		if (count == 1)
-			CounterBtn.Text = $"Clicked {count} time";
-		else
-			CounterBtn.Text = $"Clicked {count} times";
+            foreach (var post in posts)
+            {
+                await downloadedPostsManager.TryDownloadPostAsync(post, client);
+            }
+        }
 
         await Navigation.PushAsync(new BrowsePage(downloadedPostsManager));
-
-        SemanticScreenReader.Announce(CounterBtn.Text);
 	}
+
+    private async Task<PostDefinition[]> GetPostsFromWebView()
+    {
+        var postsString = await gagView.EvaluateJavaScriptAsync(JsScripts.GetPosts);
+        var postsMobileString = await gagView.EvaluateJavaScriptAsync(JsScripts.GetPostsMobile);
+        postsString = postsString != "[]" ? postsString : postsMobileString;
+        postsString = postsString.Replace("\\\"", "\"").Replace("\\\\", "\\");
+        var posts = JsonConvert.DeserializeObject<PostDefinition[]>(postsString);
+        return posts;
+    }
 }
 
