@@ -6,7 +6,7 @@ using Uri = Android.Net.Uri;
 
 namespace VideoPlayback.Platforms.Android
 {
-    [ContentProvider(new string[] { "com.companyname.VideoPlayback" })]
+    [ContentProvider(new string[] { "com.companyname.VideoPlaybackFramework" })]
     public class VideoProvider : ContentProvider
     {
         public override AssetFileDescriptor OpenAssetFile(Uri uri, string mode)

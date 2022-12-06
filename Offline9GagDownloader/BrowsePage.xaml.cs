@@ -30,9 +30,9 @@ public partial class BrowsePage : ContentPage
             posts = await postsManager.GetAllSavedPosts();
         }
         var nextPost = posts[index++];
-
         video.Source = new VideoPlayback.Controls.FileVideoSource
         {
+            //File = "C:\\Users\\Wiktor\\AppData\\Local\\Packages\\d06880af-74b7-487d-b0a9-e01132c76fb3_9zz4h110yvjzm\\LocalCache\\Roaming\\NineGagDownloader\\aeQM0vp_460svvp9.webm"
             File = nextPost.MediaPath
         };
 

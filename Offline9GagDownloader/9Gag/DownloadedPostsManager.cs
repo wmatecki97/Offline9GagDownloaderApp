@@ -5,7 +5,7 @@ namespace Offline9GagDownloader._9Gag
     internal class DownloadedPostsManager : IDownloadedPostsManager
     {
         private readonly IPostDatabase postDatabase;
-        private static string StorageDirectoryName = $"{FileSystem.Current.CacheDirectory}/Roaming/nineGagStorage";
+        private static string StorageDirectoryName = $"{FileSystem.Current.CacheDirectory}/nineGagStorage";
         public DownloadedPostsManager(IPostDatabase postDatabase)
         {
             this.postDatabase = postDatabase;
@@ -53,14 +53,14 @@ namespace Offline9GagDownloader._9Gag
             }
 
             await File.WriteAllBytesAsync(storageFileName, media);
+            var fileCanBeRead = await File.ReadAllBytesAsync(storageFileName);
             return storageFileName;
         }
 
         private static string GetStorageFileName(string url)
         {
             var filename = Path.GetFileName(url);
-            var directory = FileSystem.Current.CacheDirectory;
-            return $"{directory}/Roaming/nineGagStorage/{filename}";
+            return $"{StorageDirectoryName}/{filename}";
         }
     }
 }

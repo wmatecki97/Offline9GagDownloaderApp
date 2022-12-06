@@ -2,7 +2,7 @@
 {
     public static class Constants
     {
-        public const string DatabaseFilename = "TodoSQLite.db3";
+        public const string DatabaseFilename = "Posts.db3";
 
         public const SQLite.SQLiteOpenFlags Flags =
             // open the database in read/write mode
@@ -13,6 +13,6 @@
             SQLite.SQLiteOpenFlags.SharedCache;
 
         public static string DatabasePath =>
-            Path.Combine(FileSystem.AppDataDirectory, DatabaseFilename);
+            Path.Combine(FileSystem.Current.CacheDirectory, DatabaseFilename);
     }
 }

@@ -53,7 +53,7 @@ namespace VideoPlayback.Platforms.Windows
                 string filename = (_video.Source as FileVideoSource).File;
                 if (!string.IsNullOrWhiteSpace(filename))
                 {
-                    StorageFile storageFile = await StorageFile.GetFileFromPathForUserAsync(filename);
+                    StorageFile storageFile = await StorageFile.GetFileFromPathAsync(filename);
                     _mediaPlayerElement.Source = MediaSource.CreateFromStorageFile(storageFile);                    
                     hasSetSource = true;
                 }
