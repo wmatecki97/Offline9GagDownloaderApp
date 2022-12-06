@@ -14,7 +14,12 @@ public partial class MainPage : ContentPage
         this.downloadedPostsManager = downloadedPostsManager;
     }
 
+    
 
+    private async void OnBrowseClick(object sender, EventArgs e)
+	{
+        await Navigation.PushAsync(new BrowsePage(downloadedPostsManager));
+    }
 
     private async void OnDownloadClick(object sender, EventArgs e)
 	{

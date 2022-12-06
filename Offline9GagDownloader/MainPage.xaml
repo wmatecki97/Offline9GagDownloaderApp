@@ -12,11 +12,19 @@
             <ColumnDefinition Width="*" />
         </Grid.ColumnDefinitions>
         <WebView x:Name="gagView"  Grid.Row="0" Source="https://www.9gag.com/" />
-        <Button Grid.Row="1"
+        <HorizontalStackLayout Grid.Row="1" HorizontalOptions="Center">
+            <Button
                 x:Name="CounterBtn"
                 Text="Download"
                 SemanticProperties.Hint="Downloads the content for later use"
                 Clicked="OnDownloadClick"
-                HorizontalOptions="Center" />
+                 />
+
+            <Button 
+                Text="Browse"
+                SemanticProperties.Hint="Go to browsing stored memes"
+                Clicked="OnBrowseClick"
+                />
+        </HorizontalStackLayout>
     </Grid>
 </ContentPage>

@@ -4,10 +4,20 @@
              xmlns:controls="clr-namespace:VideoPlayback.Controls;assembly=VideoPlayback"
              x:Class="Offline9GagDownloader.BrowsePage"
              Title="BrowsePage">
-    <Grid RowDefinitions="*,Auto">
-        <Label x:Name="Title"></Label>
-        <controls:Video x:Name="video" />
-        <Button Grid.Row="1" 
+    <Grid x:Name="content">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="auto"></RowDefinition>
+            <RowDefinition Height="auto"></RowDefinition>
+            <RowDefinition Height="auto"></RowDefinition>
+        </Grid.RowDefinitions>
+        
+        <Label Grid.Row="0" x:Name="Title" HorizontalOptions="Center" FontSize="Header" FontAttributes="Bold"></Label>
+        <HorizontalStackLayout Grid.Row="1" HorizontalOptions="Center">
+            <controls:Video x:Name="video" IsVisible="false" />
+            <Image x:Name="image"/>
+        </HorizontalStackLayout>
+      
+        <Button Grid.Row="2" 
                 Text="Next"
                 Margin="10"
                 HorizontalOptions="Center"
