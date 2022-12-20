@@ -27,7 +27,7 @@ public partial class BrowsePage : ContentPage
         posts = allPosts.Where(p => !p.Displayed).ToList();
         postsCount = posts.Count();
         await Dispatcher.DispatchAsync(() => UpdateStatisticsLabel());
-        await Dispatcher.DispatchAsync(() => NextPostButtonClicked(NextPostButton, null));
+        await Dispatcher.DispatchAsync(() => LoadFirstPost());
     }
 
     protected override void OnDisappearing()
@@ -39,6 +39,16 @@ public partial class BrowsePage : ContentPage
     private void UpdateStatisticsLabel()
     {
         StatisticsLabel.Text = $"Saved posts:{postsCount}";
+    }
+
+    async Task LoadFirstPost()
+    {
+        currentPost = await GetNextPost();
+        if (currentPost is null)
+            return;
+
+        AdjustMediaWidth();
+        await UpdateMedia(currentPost);
     }
 
     async void NextPostButtonClicked(object sender, EventArgs e)
@@ -58,7 +68,7 @@ public partial class BrowsePage : ContentPage
             return;
 
         AdjustMediaWidth();
-        UpdateMedia(currentPost);
+        await UpdateMedia(currentPost);
 
         button.IsEnabled = true;
     }
