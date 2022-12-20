@@ -3,16 +3,17 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              xmlns:controls="clr-namespace:VideoPlayback.Controls;assembly=VideoPlayback"
              x:Class="Offline9GagDownloader.BrowsePage"
-             Title="BrowsePage">
+             Title="Browse stored memes"
+             BackgroundColor="Black">
     <Grid x:Name="content">
         <Grid.RowDefinitions>
             <RowDefinition Height="*"></RowDefinition>
-            <RowDefinition Height="*"></RowDefinition>
-            <RowDefinition Height="10*"></RowDefinition>
-            <RowDefinition Height="*"></RowDefinition>
+            <RowDefinition Height="4*"></RowDefinition>
+            <RowDefinition Height="15*"></RowDefinition>
+            <RowDefinition Height="2*"></RowDefinition>
         </Grid.RowDefinitions>
         <Label Grid.Row="0" x:Name="StatisticsLabel"></Label>
-        <Label Grid.Row="1" x:Name="Title" HorizontalOptions="Center" FontSize="Large" FontAttributes="Bold"></Label>
+        <Label Grid.Row="1" x:Name="Title" HorizontalOptions="Center" FontSize="Large" FontAttributes="Bold" TextColor="White"></Label>
 
         <HorizontalStackLayout x:Name="MediaStackLayout" HorizontalOptions="Center" Grid.Row="2">
             <controls:Video x:Name="video" IsVisible="false" HorizontalOptions="Center"/>
@@ -24,7 +25,7 @@
         <Button x:Name="NextPostButton"
             Grid.Row="3" 
                 Text="Next"
-                HorizontalOptions="Center"
+                Margin="5"
                 Clicked="NextPostButtonClicked" />
     </Grid>
 </ContentPage>

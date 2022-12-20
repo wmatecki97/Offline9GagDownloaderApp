@@ -1,5 +1,6 @@
 ﻿using Newtonsoft.Json;
 using Offline9GagDownloader._9Gag;
+using System.ComponentModel;
 
 namespace Offline9GagDownloader;
 
@@ -12,11 +13,25 @@ public partial class MainPage : ContentPage
 	{
 		InitializeComponent();
         this.downloadedPostsManager = downloadedPostsManager;
+        CategoryPicker.SelectedIndex = 0;
+        CategoryPicker.SelectedIndexChanged += CategoryChanged;
         Task.Run(async () => await UpdateUIData());
+    }
+
+    private void CategoryChanged(object sender, EventArgs e)
+    {
+        if(CategoryPicker.SelectedIndex > 0)
+        {
+            gagView.Source = $"https://www.9gag.com/{CategoryPicker.SelectedItem}";
+        }
     }
 
     private async Task UpdateUIData()
     {
+        if (Connectivity.Current.NetworkAccess != NetworkAccess.Internet)
+        {
+            await Navigation.PushAsync(new BrowsePage(downloadedPostsManager));
+        }
         var posts = await downloadedPostsManager.GetAllSavedPosts();
         postsCount = posts.Where(p => !p.Displayed).Count();
         await Dispatcher.DispatchAsync(() => UpdateStatisticsLabel());
@@ -38,12 +53,12 @@ public partial class MainPage : ContentPage
 		for(int i= 0; i < 10; i++)
         {
             await gagView.EvaluateJavaScriptAsync("window.scrollTo(0, document.body.scrollHeight)");
-            await Task.Delay(1000);
+            await Task.Delay(200);//9gag crashes sometimes when scrolling too fast
             PostDefinition[] posts = await GetPostsFromWebView();
 
             foreach (var post in posts)
             {
-                var success = await downloadedPostsManager.TryDownloadPostAsync(post, client);
+                await downloadedPostsManager.TryDownloadPostAsync(post, client);
             }
 
             await UpdateUIData();

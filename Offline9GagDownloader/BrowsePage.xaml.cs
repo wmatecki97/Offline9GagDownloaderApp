@@ -1,6 +1,7 @@
 using Microsoft.Maui.Dispatching;
 using Offline9GagDownloader._9Gag;
 using Offline9GagDownloader._9Gag.DB;
+using VideoPlayback.Controls;
 
 namespace Offline9GagDownloader;
 
@@ -47,6 +48,7 @@ public partial class BrowsePage : ContentPage
 
         //remove old from memory
         postsManager.DeletePost(currentPost);
+        video.Source = null;
         postsCount--;
         UpdateStatisticsLabel();
 
@@ -61,7 +63,7 @@ public partial class BrowsePage : ContentPage
         button.IsEnabled = true;
     }
 
-    private void UpdateMedia(PostModel nextPost)
+    private async Task UpdateMedia(PostModel nextPost)
     {
         Title.Text = nextPost.Title;
         if (Path.GetExtension(nextPost.MediaPath) == ".jpg")
@@ -73,6 +75,7 @@ public partial class BrowsePage : ContentPage
         }
         else
         {
+            Console.WriteLine(nextPost.MediaPath);
             video.Source = new VideoPlayback.Controls.FileVideoSource
             {
                 File = nextPost.MediaPath
@@ -85,7 +88,7 @@ public partial class BrowsePage : ContentPage
     private void AdjustMediaWidth()
     {
         var postWidth = DeviceDisplay.MainDisplayInfo.Width < StandardPostSize ? DeviceDisplay.MainDisplayInfo.Width : StandardPostSize;
-        postWidth/=1.6;
+        postWidth/=1.8;//ugly hack since phone width is not woking as expected
         video.WidthRequest = postWidth;
         image.WidthRequest = postWidth;
     }

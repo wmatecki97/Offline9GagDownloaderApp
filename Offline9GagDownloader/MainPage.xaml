@@ -5,30 +5,47 @@
 
     <Grid>
         <Grid.RowDefinitions>
-            <RowDefinition Height="*" />
-            <RowDefinition Height="20*" />
             <RowDefinition Height="2*" />
-            <RowDefinition Height="*" />
+            <RowDefinition Height="19*" />
+            <RowDefinition Height="2*" />
         </Grid.RowDefinitions>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="*" />
+            <ColumnDefinition Width="*" />
         </Grid.ColumnDefinitions>
-        <Label x:Name="StatisticsLabel" Grid.Row="0"></Label>
+        <Label x:Name="StatisticsLabel" Grid.Row="0" Grid.Column="0"></Label>
+        <Picker x:Name="CategoryPicker" SelectedItem="Home" Grid.Row="0" Grid.Column="1">
+            <Picker.Items>
+                <x:String>Select a category</x:String>
+                <x:String>Home</x:String>
+                <x:String>Trending</x:String>
+                <x:String>Fresh</x:String>
+                <x:String>Top</x:String>
+                <x:String>tag/Funny</x:String>
+                <x:String>tag/Ukraine</x:String>
+                <x:String>tag/Science</x:String>
+            </Picker.Items>
+        </Picker>
 
-        <WebView x:Name="gagView"  Grid.Row="1" Source="https://www.9gag.com/" />
-        <HorizontalStackLayout Grid.Row="2" HorizontalOptions="Center">
+        <WebView x:Name="gagView"  Grid.Row="1" Grid.ColumnSpan="2" Source="https://www.9gag.com/" />
+
             <Button
+                Margin="5"
+                Grid.Row="2"
+                Grid.Column="0"
                 x:Name="CounterBtn"
                 Text="Download"
                 SemanticProperties.Hint="Downloads the content for later use"
                 Clicked="OnDownloadClick"
                  />
 
-            <Button 
+        <Button 
+                Margin="5"
+                Grid.Row="2"
+                Grid.Column="1"
                 Text="Browse"
                 SemanticProperties.Hint="Go to browsing stored memes"
                 Clicked="OnBrowseClick"
                 />
-        </HorizontalStackLayout>
     </Grid>
 </ContentPage>

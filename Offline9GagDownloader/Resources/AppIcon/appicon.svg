@@ -1,4 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<svg width="456" height="456" viewBox="0 0 456 456" version="1.1" xmlns="http://www.w3.org/2000/svg">
-    <rect x="0" y="0" width="456" height="456" fill="#512BD4" />
+<svg width="600" height="600" xmlns="http://www.w3.org/2000/svg">
+	<g>
+		<title>Layer 1</title>
+		<text style="cursor: move;" transform="matrix(27.3729 0 0 22.3698 -6655.64 -375.872)" stroke="#000" xml:space="preserve" text-anchor="start" font-family="Noto Sans JP" font-size="24" id="svg_1" y="38.30276" x="248.03356" stroke-width="0" fill="#ffffff">8</text>
+	</g>
 </svg>
