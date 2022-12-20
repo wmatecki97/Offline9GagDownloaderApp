@@ -15,6 +15,11 @@ public partial class MainPage : ContentPage
         this.downloadedPostsManager = downloadedPostsManager;
         CategoryPicker.SelectedIndex = 0;
         CategoryPicker.SelectedIndexChanged += CategoryChanged;
+    }
+
+    protected override void OnAppearing()
+    {
+        base.OnAppearing();
         Task.Run(async () => await UpdateUIData());
     }
 
