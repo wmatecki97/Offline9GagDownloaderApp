@@ -8,6 +8,7 @@
             <RowDefinition Height="2*" />
             <RowDefinition Height="19*" />
             <RowDefinition Height="2*" />
+            <RowDefinition Height="auto" />
         </Grid.RowDefinitions>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="*" />
@@ -33,10 +34,21 @@
                 Margin="5"
                 Grid.Row="2"
                 Grid.Column="0"
-                x:Name="CounterBtn"
+                x:Name="DownloadBtn"
                 Text="Download"
                 SemanticProperties.Hint="Downloads the content for later use"
                 Clicked="OnDownloadClick"
+                 />
+        <Button
+                Margin="5"
+                Grid.Row="2"
+                Grid.Column="0"
+                x:Name="CancelDownloadBtn"
+                Text="Cancel download"
+                SemanticProperties.Hint="Downloads the content for later use"
+                Clicked="OnCancelDownloadClick"
+                BackgroundColor="Red"
+                IsVisible="False"
                  />
 
         <Button 
@@ -47,5 +59,11 @@
                 SemanticProperties.Hint="Go to browsing stored memes"
                 Clicked="OnBrowseClick"
                 />
+        <ProgressBar 
+            x:Name="DownloadProgressBarr"
+            Grid.Row="3" 
+            Grid.ColumnSpan="2" 
+            Margin="10"
+            />
     </Grid>
 </ContentPage>

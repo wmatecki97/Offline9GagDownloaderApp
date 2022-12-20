@@ -6,10 +6,12 @@ namespace Offline9GagDownloader;
 
 public partial class MainPage : ContentPage
 {
+    private const int PagesToScrollWhenDownloadingCount = 10;
     private readonly IDownloadedPostsManager downloadedPostsManager;
     int postsCount = 0;
+    private bool _isDownloadInProgress = false;
 
-	public MainPage(IDownloadedPostsManager downloadedPostsManager)
+    public MainPage(IDownloadedPostsManager downloadedPostsManager)
 	{
 		InitializeComponent();
         this.downloadedPostsManager = downloadedPostsManager;
@@ -54,23 +56,47 @@ public partial class MainPage : ContentPage
 
     private async void OnDownloadClick(object sender, EventArgs e)
 	{
+        Button button = sender as Button;
+        button.IsVisible = false;
+
+        _isDownloadInProgress = true;
+        CancelDownloadBtn.IsVisible = true;
+
+        ProgressBar progressBar = DownloadProgressBarr;
+        var progresStepSizePerScroll = 1f / PagesToScrollWhenDownloadingCount;
+
         using var client = new HttpClient();
-		for(int i= 0; i < 10; i++)
+		for(int i= 0; i < PagesToScrollWhenDownloadingCount; i++)
         {
+            if(!_isDownloadInProgress) 
+                break;
+
             await gagView.EvaluateJavaScriptAsync("window.scrollTo(0, document.body.scrollHeight)");
             await Task.Delay(200);//9gag crashes sometimes when scrolling too fast
             PostDefinition[] posts = await GetPostsFromWebView();
 
             foreach (var post in posts)
             {
+                if(!_isDownloadInProgress) 
+                    break;
+
                 await downloadedPostsManager.TryDownloadPostAsync(post, client);
+                await progressBar.ProgressTo(progressBar.Progress + progresStepSizePerScroll / posts.Length, 1, Easing.Default);
             }
 
             await UpdateUIData();
         }
 
-        await Navigation.PushAsync(new BrowsePage(downloadedPostsManager));
-	}
+        _isDownloadInProgress = false;
+        CancelDownloadBtn.IsVisible = false;
+        button.IsVisible = true;
+        progressBar.Progress = 0;
+    }
+
+    private void OnCancelDownloadClick(object sender, EventArgs e)
+    {
+        _isDownloadInProgress = false;
+    }
 
     private async Task<PostDefinition[]> GetPostsFromWebView()
     {
@@ -78,7 +104,6 @@ public partial class MainPage : ContentPage
         var postsMobileString = await gagView.EvaluateJavaScriptAsync(JsScripts.GetPostsMobile);
         postsString = postsString != "[]" ? postsString : postsMobileString;
         postsString = postsString.Replace("\\\"", "\"").Replace("\\\\", "\\");
-        Console.WriteLine(postsString);
         var posts = JsonConvert.DeserializeObject<PostDefinition[]>(postsString);
         return posts;
     }
