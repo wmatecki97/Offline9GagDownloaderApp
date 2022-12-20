@@ -41,17 +41,17 @@ public partial class BrowsePage : ContentPage
         StatisticsLabel.Text = $"Saved posts:{postsCount}";
     }
 
-    async Task LoadFirstPost()
+    void LoadFirstPost()
     {
-        currentPost = await GetNextPost();
+        currentPost = GetNextPost();
         if (currentPost is null)
             return;
 
         AdjustMediaWidth();
-        await UpdateMedia(currentPost);
+        UpdateMedia(currentPost);
     }
 
-    async void NextPostButtonClicked(object sender, EventArgs e)
+    void NextPostButtonClicked(object sender, EventArgs e)
     {
         Button button = sender as Button;
         button.IsEnabled = false;
@@ -63,17 +63,17 @@ public partial class BrowsePage : ContentPage
         UpdateStatisticsLabel();
 
         //load new post
-        currentPost = await GetNextPost();
+        currentPost = GetNextPost();
         if (currentPost is null)
             return;
 
         AdjustMediaWidth();
-        await UpdateMedia(currentPost);
+        UpdateMedia(currentPost);
 
         button.IsEnabled = true;
     }
 
-    private async Task UpdateMedia(PostModel nextPost)
+    private void UpdateMedia(PostModel nextPost)
     {
         Title.Text = nextPost.Title;
         if (Path.GetExtension(nextPost.MediaPath) == ".jpg")
@@ -86,7 +86,7 @@ public partial class BrowsePage : ContentPage
         else
         {
             Console.WriteLine(nextPost.MediaPath);
-            video.Source = new VideoPlayback.Controls.FileVideoSource
+            video.Source = new FileVideoSource
             {
                 File = nextPost.MediaPath
             };
@@ -103,7 +103,7 @@ public partial class BrowsePage : ContentPage
         image.WidthRequest = postWidth;
     }
 
-    private async Task<PostModel> GetNextPost()
+    private PostModel GetNextPost()
     {
         if(index == posts.Count)
         {
