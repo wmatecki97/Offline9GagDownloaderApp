@@ -16,9 +16,9 @@
         <Label Grid.Row="1" x:Name="Title" HorizontalOptions="Center" FontSize="Large" FontAttributes="Bold" TextColor="White"></Label>
 
         <HorizontalStackLayout x:Name="MediaStackLayout" HorizontalOptions="Center" Grid.Row="2">
-            <controls:Video x:Name="video" IsVisible="false" HorizontalOptions="Center"/>
+            <controls:Video x:Name="Video" IsVisible="false" HorizontalOptions="Center"/>
             <ScrollView x:Name="MediaScrollView" >
-                <Image x:Name="image" />
+                <Image x:Name="Image" />
             </ScrollView>
         </HorizontalStackLayout>
 

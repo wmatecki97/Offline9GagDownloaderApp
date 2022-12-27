@@ -1,4 +1,3 @@
-using Microsoft.Maui.Dispatching;
 using Offline9GagDownloader._9Gag;
 using Offline9GagDownloader._9Gag.DB;
 using VideoPlayback.Controls;
@@ -33,7 +32,7 @@ public partial class BrowsePage : ContentPage
     protected override void OnDisappearing()
     {
         base.OnDisappearing();
-        video.Stop();
+        Video.Stop();
     }
 
     private void UpdateStatisticsLabel()
@@ -57,8 +56,8 @@ public partial class BrowsePage : ContentPage
         button.IsEnabled = false;
 
         //remove old from memory
+        CreateNewMediaViews();
         postsManager.DeletePost(currentPost);
-        video.Source = null;
         postsCount--;
         UpdateStatisticsLabel();
 
@@ -73,25 +72,46 @@ public partial class BrowsePage : ContentPage
         button.IsEnabled = true;
     }
 
+    private void CreateNewMediaViews()
+    {
+        MediaStackLayout.Children.Clear();
+        Video = new Video
+        {
+            HorizontalOptions = LayoutOptions.Center,
+        };
+        Image = new Image
+        {
+            HorizontalOptions = LayoutOptions.Center
+        };
+        MediaScrollView = new ScrollView()
+        {
+            Content = Image
+        };
+        MediaStackLayout.Children.Add(Video);
+        MediaStackLayout.Children.Add(MediaScrollView);
+        //to prevent unused video files of using the memory
+        GC.Collect();
+    }
+
     private void UpdateMedia(PostModel nextPost)
     {
         Title.Text = nextPost.Title;
         if (Path.GetExtension(nextPost.MediaPath) == ".jpg")
         {
-            image.Source = nextPost.MediaPath;
-            image.IsVisible = true;
-            video.IsVisible = false;
-            video.Pause();
+            Image.Source = nextPost.MediaPath;
+            Image.IsVisible = true;
+            Video.IsVisible = false;
+            Video.Pause();
         }
         else
         {
             Console.WriteLine(nextPost.MediaPath);
-            video.Source = new FileVideoSource
+            Video.Source = new FileVideoSource
             {
                 File = nextPost.MediaPath
             };
-            image.IsVisible = false;
-            video.IsVisible = true;
+            Image.IsVisible = false;
+            Video.IsVisible = true;
         }
     }
 
@@ -99,8 +119,8 @@ public partial class BrowsePage : ContentPage
     {
         var postWidth = DeviceDisplay.MainDisplayInfo.Width < StandardPostSize ? DeviceDisplay.MainDisplayInfo.Width : StandardPostSize;
         postWidth/=1.8;//ugly hack since phone width is not woking as expected
-        video.WidthRequest = postWidth;
-        image.WidthRequest = postWidth;
+        Video.WidthRequest = postWidth;
+        Image.WidthRequest = postWidth;
     }
 
     private PostModel GetNextPost()
@@ -113,10 +133,5 @@ public partial class BrowsePage : ContentPage
 
         var nextPost = posts[index++];
         return nextPost;
-    }
-
-    void OnContentPageUnloaded(object sender, EventArgs e)
-    {
-        video.Handler?.DisconnectHandler();
     }
 }
