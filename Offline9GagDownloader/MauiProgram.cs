@@ -1,5 +1,4 @@
-﻿using Microsoft.Extensions.DependencyInjection;
-using Offline9GagDownloader._9Gag;
+﻿using Offline9GagDownloader._9Gag;
 using Offline9GagDownloader._9Gag.DB;
 using VideoPlayback.Controls;
 using VideoPlayback.Handlers;
@@ -24,9 +23,9 @@ public static class MauiProgram
             });
         builder.Services.AddSingleton<MainPage>();
         builder.Services.AddScoped<IDownloadedPostsManager, DownloadedPostsManager>();
-		//builder.Services.AddHttpClient();
 		builder.Services.AddSingleton<IPostDatabase, PostDatabase>();
         Routing.RegisterRoute("home", typeof(MainPage));
+        builder.Services.AddHttpClient();
         return builder.Build();
     }
 }

@@ -7,5 +7,7 @@ namespace Offline9GagDownloader._9Gag
         Task<List<PostModel>> GetAllSavedPosts();
         Task<bool> TryDownloadPostAsync(PostDefinition postDefinition, HttpClient client);
         void DeletePost(PostModel currentPost);
+        Task<int> GetNotBrowsedMemesCount();
+        Task<PostDefinition[]> FilterOutAlreadySeenMemesAsync(PostDefinition[] posts);
     }
 }

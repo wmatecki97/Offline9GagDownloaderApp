@@ -1,4 +1,5 @@
 ﻿using SQLite;
+using System.Linq.Expressions;
 
 namespace Offline9GagDownloader._9Gag.DB
 {
@@ -12,7 +13,7 @@ namespace Offline9GagDownloader._9Gag.DB
                 return;
 
             Database = new SQLiteAsyncConnection(Constants.DatabasePath, Constants.Flags);
-            var result = await Database.CreateTableAsync<PostModel>();
+            await Database.CreateTableAsync<PostModel>();
         }
 
         public async Task<List<PostModel>> GetItems()
@@ -21,18 +22,35 @@ namespace Offline9GagDownloader._9Gag.DB
             return await Database.Table<PostModel>().ToListAsync();
         }
 
+        public async Task<int> GetNotBrowsedMemesCount()
+        {
+            await Init();
+            return await Database.Table<PostModel>().Where(p => !p.Displayed).CountAsync();
+        }
+
+        public async Task<List<PostModel>> GetItems(Expression<Func<PostModel, bool>> filterExpression)
+        {
+            await Init();
+            return await Database.Table<PostModel>().Where(filterExpression).ToListAsync();
+        }
+
+        public async Task<bool> CehckIfMediaUrlExist(string url)
+        {
+            await Init();
+            var media = await Database.Table<PostModel>().FirstOrDefaultAsync(x => x.SrcUrl == url);
+            return media != null;
+        }
+
         public async Task<int> SavePost(PostModel post)
         {
             await Init();
 
             if (post.Id != 0)
             {
-                // Update an existing note.
                 return await Database.UpdateAsync(post);
             }
             else
             {
-                // Save a new note.
                 return await Database.InsertAsync(post);
             }
         }

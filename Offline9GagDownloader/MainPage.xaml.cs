@@ -8,13 +8,15 @@ public partial class MainPage : ContentPage
 {
     private const int PagesToScrollWhenDownloadingCount = 10;
     private readonly IDownloadedPostsManager downloadedPostsManager;
+    private readonly IHttpClientFactory httpClientFactory;
     int postsCount = 0;
     private bool _isDownloadInProgress = false;
 
-    public MainPage(IDownloadedPostsManager downloadedPostsManager)
+    public MainPage(IDownloadedPostsManager downloadedPostsManager, IHttpClientFactory httpClientFactory)
 	{
 		InitializeComponent();
         this.downloadedPostsManager = downloadedPostsManager;
+        this.httpClientFactory = httpClientFactory;
         CategoryPicker.SelectedIndex = 0;
         CategoryPicker.SelectedIndexChanged += CategoryChanged;
     }
@@ -39,8 +41,7 @@ public partial class MainPage : ContentPage
         {
             await Navigation.PushAsync(new BrowsePage(downloadedPostsManager));
         }
-        var posts = await downloadedPostsManager.GetAllSavedPosts();
-        postsCount = posts.Where(p => !p.Displayed).Count();
+        postsCount = await downloadedPostsManager.GetNotBrowsedMemesCount();
         await Dispatcher.DispatchAsync(() => UpdateStatisticsLabel());
     }
 
@@ -65,7 +66,6 @@ public partial class MainPage : ContentPage
         ProgressBar progressBar = DownloadProgressBarr;
         var progresStepSizePerScroll = 1f / PagesToScrollWhenDownloadingCount;
 
-        using var client = new HttpClient();
 		for(int i= 0; i < PagesToScrollWhenDownloadingCount; i++)
         {
             if(!_isDownloadInProgress) 
@@ -75,14 +75,12 @@ public partial class MainPage : ContentPage
             await Task.Delay(200);//9gag crashes sometimes when scrolling too fast
             PostDefinition[] posts = await GetPostsFromWebView();
 
-            foreach (var post in posts)
-            {
-                if(!_isDownloadInProgress) 
-                    break;
+            var memesToDownload = await downloadedPostsManager.FilterOutAlreadySeenMemesAsync(posts);
 
-                await downloadedPostsManager.TryDownloadPostAsync(post, client);
-                await progressBar.ProgressTo(progressBar.Progress + progresStepSizePerScroll / posts.Length, 1, Easing.Default);
-            }
+            var downloadTasks = memesToDownload.Select(m => downloadedPostsManager.TryDownloadPostAsync(m, httpClientFactory.CreateClient()));
+
+            await Task.WhenAll(downloadTasks);
+            await progressBar.ProgressTo(progressBar.Progress + progresStepSizePerScroll, 1, Easing.Default);
 
             await UpdateUIData();
         }

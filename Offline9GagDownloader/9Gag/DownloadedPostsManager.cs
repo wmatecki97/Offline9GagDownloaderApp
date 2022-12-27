@@ -17,16 +17,15 @@ namespace Offline9GagDownloader._9Gag
             return posts;
         }
 
+        public Task<int> GetNotBrowsedMemesCount()
+        {
+            return postDatabase.GetNotBrowsedMemesCount();
+        }
+
         public async Task<bool> TryDownloadPostAsync(PostDefinition post, HttpClient client)
         {
             try
             {
-                var posts = await postDatabase.GetItems();
-
-                if (posts.Any(p => p.SrcUrl == post.ImgSrc))
-                {
-                    return false;
-                }
 
                 var media = await client.GetByteArrayAsync(post.ImgSrc);
 
@@ -71,6 +70,13 @@ namespace Offline9GagDownloader._9Gag
         {
             var filename = Path.GetFileName(url);
             return Path.Combine(StorageDirectoryName,filename);
+        }
+
+        public async Task<PostDefinition[]> FilterOutAlreadySeenMemesAsync(PostDefinition[] posts)
+        {
+            var postsUrls = new HashSet<string>(posts.Select(p => p.ImgSrc));
+            var dbPosts = await postDatabase.GetItems(p => postsUrls.Contains(p.SrcUrl));
+            return posts.Where(p => !dbPosts.Any(dbp => dbp.SrcUrl == p.ImgSrc)).ToArray();
         }
     }
 }
