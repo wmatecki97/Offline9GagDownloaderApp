@@ -89,6 +89,8 @@ public partial class BrowsePage : ContentPage
         };
         MediaStackLayout.Children.Add(Video);
         MediaStackLayout.Children.Add(MediaScrollView);
+
+        MediaStackLayout.Children.Add()
         //to prevent unused video files of using the memory
         GC.Collect();
     }
@@ -112,6 +114,10 @@ public partial class BrowsePage : ContentPage
             };
             Image.IsVisible = false;
             Video.IsVisible = true;
+        }
+        foreach (var tag in nextPost.Tags)
+        {
+            MediaStackLayout.Children.Add(new Label(){Text=tag});
         }
     }
 

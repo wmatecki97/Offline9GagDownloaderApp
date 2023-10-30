@@ -4,5 +4,6 @@
     {
         public string Header { get; set; }
         public string ImgSrc { get; set; }
+        public string[] Tags { get; set; }
     }
 }

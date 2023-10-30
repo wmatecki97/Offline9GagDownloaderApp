@@ -13,6 +13,7 @@ namespace Offline9GagDownloader._9Gag.DB
         public string Title { get; set; }
         public string SrcUrl { get; set; }
         public bool Displayed { get; set; }
+        public string[] Tags { get; set; }
 
         public PostModel()
         {
@@ -24,6 +25,7 @@ namespace Offline9GagDownloader._9Gag.DB
             SrcUrl = p.ImgSrc;
             CreatedDate = DateTime.Now;
             MediaPath = mediaPath;
+            Tags = p.Tags;
         }
 
 
